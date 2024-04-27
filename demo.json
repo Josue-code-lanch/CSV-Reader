@@ -1,0 +1,24 @@
+
+[
+    {
+        "id": 1,
+        "Nombre": "Ana García",
+        "Edad": 35,
+        "Departamento": "Marketing",
+        "Email": "ana.garcia@example.com"
+    },
+    {
+        "id": 2,
+        "Nombre": "Juan López",
+        "Edad": 28,
+        "Departamento": "Recursos Humanos",
+        "Email": "juan.lopez@example.com"
+    },
+    {
+        "id": 3,
+        "Nombre": "Marta Martínez",
+        "Edad": 42,
+        "Departamento": "Ventas",
+        "Email": "marta.martinez@example.com"
+    }
+]
