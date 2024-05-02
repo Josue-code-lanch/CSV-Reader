@@ -28,9 +28,8 @@ app.post('/api/files', upload.single('file'), async(req, res) => {
     // 4. Transformar el archivo (buffer) a String
     try {
         const rawCsv = Buffer.from(file.buffer).toString('utf-8')
-        console.log(rawCsv)
         // 5. Transformar el String (csv) a JSON
-        json = csvToJson.csvStringToJson(rawCsv)
+        json = csvToJson.fieldDelimiter(',').csvStringToJson(rawCsv)
     } catch (error) {
         return res.status(500).json({ message: 'Error al analizar el archivo' })
     }
@@ -41,7 +40,7 @@ app.post('/api/files', upload.single('file'), async(req, res) => {
     return res.status(200).json({ data: json, message: 'El archivo de cargo correctamente.' })
 })
 
-app.get('/api/files', async(req, res) => {
+app.get('/api/users', async(req, res) => {
     // 1. Extraer el parametro de consulta 'q' de la solicitud
     const { q } = req.query
     // 2. Validar que esta el parametro de consulta

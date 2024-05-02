@@ -3,6 +3,7 @@ import { Toaster, toast } from 'sonner';
 import './App.css';
 import { uploadFile } from './services/upload';
 import { type Data } from './types';
+import { Search } from './steps/Search';
 
 const APP_STATUS = {
   IDLE: 'idle',
@@ -25,9 +26,9 @@ function App() {
   const [file, setFile] = useState<File | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
+    const file = event.target.files?.[0];
+    if (file) {
+      setFile(file);
       setAppStatus(APP_STATUS.READY_UPLOAD);
     }
   };
@@ -43,6 +44,8 @@ function App() {
 
     const [err, newData] = await uploadFile(file)
 
+    console.log({ newData })
+
     if (err) {
       setAppStatus(APP_STATUS.ERROR)
       toast.error(err.message)
@@ -55,28 +58,38 @@ function App() {
   };
 
   const showButton = appStatus === APP_STATUS.READY_UPLOAD || appStatus === APP_STATUS.UPLOADING;
+  const showInput = appStatus !== APP_STATUS.READY_USAGE
 
   return (
     <>
       <Toaster />
       <h4>Challenge: Upload CSV + Search</h4>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <input
-            disabled={appStatus === APP_STATUS.UPLOADING}
-            onChange={handleInputChange}
-            name="file"
-            type="file"
-            accept=".csv"
-          />
-        </label>
+      {
+        showInput && (
+        <form onSubmit={handleSubmit}>
+          <label>
+            <input
+              disabled={appStatus === APP_STATUS.UPLOADING}
+              onChange={handleInputChange}
+              name="file"
+              type="file"
+              accept=".csv"
+            />
+          </label>
 
-        {showButton && (
-          <button disabled={appStatus === APP_STATUS.UPLOADING} type="submit">
-            {BUTTON_TEXT[appStatus]}
-          </button>
-        )}
-      </form>
+          {showButton && (
+            <button disabled={appStatus === APP_STATUS.UPLOADING} type="submit">
+              {BUTTON_TEXT[appStatus]}
+            </button>
+          )}
+        </form>
+      )}
+
+      {
+        appStatus === APP_STATUS.READY_USAGE && (
+          <Search initialData={ data } />
+        )
+      }
     </>
   );
 }
